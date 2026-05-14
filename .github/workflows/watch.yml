@@ -1,0 +1,68 @@
+name: Watch Apple Refurbished Store
+
+on:
+  schedule:
+    # Private リポジトリの無料枠 (月2000分) 内で運用するため15分間隔。
+    # 1ジョブ約30秒 × 4回/時 × 24h × 30日 = 約1,440分/月。
+    # 検出から通知まで最大 15-20 分遅延の可能性あり。
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      iterations:
+        description: '実行回数 (デフォルト1)'
+        required: false
+        default: '1'
+      interval:
+        description: 'イテレーション間隔(秒)'
+        required: false
+        default: '60'
+
+# 同名ジョブが重複起動しないように。前のジョブが終わるまで待つ。
+concurrency:
+  group: refurb-watch
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # state.json のコミットに必要
+  issues: write     # Issue 作成に必要
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # state.json をコミットするので token を保持
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run watch loop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          CHECK_ITERATIONS: ${{ github.event.inputs.iterations || '1' }}
+          CHECK_INTERVAL_SEC: ${{ github.event.inputs.interval || '60' }}
+        run: python scripts/check.py
+
+      - name: Commit state changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/known_products.json
+          if git diff --staged --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore: update known_products $(date -u +%Y-%m-%dT%H:%MZ)"
+            # push 失敗時は次のジョブで取り込まれるので致命的ではない
+            git push || echo "[warn] push failed, will retry next run"
+          fi
