@@ -2,10 +2,9 @@ name: Watch Apple Refurbished Store
 
 on:
   schedule:
-    # Private リポジトリの無料枠 (月2000分) 内で運用するため15分間隔。
-    # 1ジョブ約30秒 × 4回/時 × 24h × 30日 = 約1,440分/月。
-    # 検出から通知まで最大 15-20 分遅延の可能性あり。
-    - cron: '*/15 * * * *'
+    # Public リポジトリは GitHub Actions が無料無制限。
+    # 5分間隔で監視 → 検出から通知まで最大 5-7 分。
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       iterations:

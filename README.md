@@ -13,7 +13,7 @@ Apple 整備済みストア (日本) を 1 分間隔で監視し、欲しい Mac
 ## 仕組み
 
 ```
-GitHub Actions (cron: */15 * * * *)
+GitHub Actions (cron: */5 * * * *)
   └─ check.py を起動 (1ジョブ約30秒)
        └─ Apple 整備済みストアを並列スクレイピング
             - https://www.apple.com/jp/shop/refurbished/mac
@@ -24,10 +24,9 @@ GitHub Actions (cron: */15 * * * *)
                  └─ GitHub Mobile に通知 → iPhone のロック画面表示 (数秒以内)
 ```
 
-- **15 分間隔**で実行。Private リポジトリの無料枠 (月 2000 分) に収まる。
-- 1 ジョブ約 30 秒 × 4 回/時 × 24h × 30日 = 約 1,440 分/月。
-- 検出から通知まで **最大 15-20 分** の遅延の可能性あり。
-- より低遅延が必要な場合は Public リポジトリにして cron を `*/5 * * * *` に変更 (無料無制限)。
+- **5 分間隔**で実行 (GitHub Actions の最短間隔)。
+- Public リポジトリは Actions が無料無制限のため、頻度制限なく運用可能。
+- 検出から通知まで **最大 5〜7 分** (cron 遅延を加味)。
 
 ## セットアップ手順
 
