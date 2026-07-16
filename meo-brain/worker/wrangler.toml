@@ -1,0 +1,12 @@
+name = "meo-brain-api"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# 環境変数(秘密情報は wrangler secret put で設定すること)
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put GOOGLE_MAPS_API_KEY
+[vars]
+# 本番では自社ドメインに限定する(カンマ区切りで複数可)
+ALLOWED_ORIGINS = "*"
+# 使用するClaudeモデル。品質重視: claude-opus-4-8 / コスト重視: claude-haiku-4-5
+CLAUDE_MODEL = "claude-opus-4-8"

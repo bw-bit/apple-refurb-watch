@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEOブレイン | 無料MEO診断ツール - Googleマップ集客力を60秒でAI診断</title>
+<meta name="description" content="店舗のGoogleビジネスプロフィールを19項目で自動診断。MEO対策のスコア・改善優先度・30日アクションプランを無料で作成します。">
+<style>
+:root{
+  --primary:#1d4ed8;
+  --primary-dark:#1e3a8a;
+  --accent:#059669;
+  --danger:#dc2626;
+  --warn:#d97706;
+  --ink:#0f172a;
+  --sub:#475569;
+  --line:#e2e8f0;
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic UI",Meiryo,sans-serif;
+  background:var(--bg);color:var(--ink);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+
+/* ---------- hero ---------- */
+.hero{
+  background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 55%,#2563eb 100%);
+  color:#fff;padding:56px 0 72px;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;
+  border-radius:50%;background:rgba(255,255,255,.07);
+}
+.hero::before{
+  content:"";position:absolute;left:-80px;bottom:-160px;width:300px;height:300px;
+  border-radius:50%;background:rgba(255,255,255,.05);
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em;margin-bottom:28px;font-size:18px}
+.brand .logo{
+  width:34px;height:34px;border-radius:9px;background:#fff;color:var(--primary);
+  display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;
+}
+.hero h1{font-size:clamp(26px,5vw,40px);line-height:1.35;font-weight:800;margin-bottom:14px}
+.hero h1 .em{color:#a5f3fc}
+.hero p.lead{font-size:clamp(14px,2.5vw,17px);opacity:.92;max-width:600px}
+.hero .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hero .badge{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;padding:5px 14px;font-size:13px;font-weight:600;
+}
+.cta-start{
+  display:inline-block;margin-top:28px;background:#fff;color:var(--primary-dark);
+  font-weight:800;font-size:17px;padding:14px 36px;border-radius:999px;text-decoration:none;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);transition:transform .15s;
+}
+.cta-start:hover{transform:translateY(-2px)}
+
+/* ---------- sections ---------- */
+section{padding:44px 0}
+h2.sec{
+  font-size:clamp(20px,3.6vw,26px);font-weight:800;margin-bottom:6px;
+  display:flex;align-items:center;gap:10px;
+}
+h2.sec .num{
+  flex:none;width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+p.sec-sub{color:var(--sub);font-size:14px;margin-bottom:22px;padding-left:44px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;margin-bottom:14px;box-shadow:0 1px 3px rgba(15,23,42,.05);
+}
+
+/* ---------- form ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+label.fl{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+label.fl .req{color:var(--danger);font-size:11px;margin-left:6px;vertical-align:middle}
+input[type=text],select{
+  width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;
+  font-size:15px;background:#fff;color:var(--ink);
+}
+input[type=text]:focus,select:focus{outline:none;border-color:var(--primary)}
+.hint{font-size:12px;color:var(--sub);margin-top:4px}
+
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:12px}
+.q-card.answered{border-color:#bfdbfe;background:#fdfefe}
+.q-title{font-weight:700;font-size:15px;margin-bottom:10px;display:flex;gap:8px}
+.q-title .qn{color:var(--primary);flex:none;font-weight:800}
+.q-cat{display:inline-block;font-size:11px;font-weight:700;color:var(--primary);background:#eff6ff;border-radius:6px;padding:1px 8px;margin-left:auto;flex:none;height:fit-content}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{
+  display:flex;align-items:flex-start;gap:9px;padding:9px 12px;border:1.5px solid var(--line);
+  border-radius:9px;cursor:pointer;font-size:14px;transition:all .12s;background:#fff;
+}
+.opt:hover{border-color:#93c5fd;background:#f0f7ff}
+.opt input{margin-top:4px;accent-color:var(--primary)}
+.opt.sel{border-color:var(--primary);background:#eff6ff;font-weight:600}
+.progress-bar{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);padding:10px 0;display:none;
+}
+.progress-bar.show{display:block}
+.progress-inner{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700}
+.ptrack{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.pfill{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:99px;transition:width .25s}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;border-radius:999px;font-weight:800;cursor:pointer;text-decoration:none;
+  transition:transform .12s,box-shadow .12s;font-family:inherit;
+}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--primary);color:#fff;font-size:17px;padding:15px 44px;box-shadow:0 6px 18px rgba(29,78,216,.35)}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px)}
+.btn-accent{background:var(--accent);color:#fff;font-size:15px;padding:12px 28px}
+.btn-ghost{background:#fff;color:var(--primary);border:1.5px solid var(--primary);font-size:14px;padding:10px 22px}
+.center{text-align:center}
+
+/* ---------- results ---------- */
+#result{display:none}
+.score-hero{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border-radius:var(--radius);
+  padding:30px 24px;display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;margin-bottom:16px;
+}
+@media(max-width:640px){.score-hero{grid-template-columns:1fr;text-align:center}}
+.gauge{position:relative;width:180px;height:180px;margin:0 auto}
+.gauge svg{transform:rotate(-90deg)}
+.gauge .gtxt{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.gauge .gnum{font-size:46px;font-weight:800;line-height:1}
+.gauge .gunit{font-size:13px;opacity:.8}
+.score-hero h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.score-hero .rank-label{
+  display:inline-block;padding:3px 14px;border-radius:999px;font-weight:800;font-size:14px;margin-bottom:10px;
+}
+.score-hero p{font-size:14px;opacity:.92}
+
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.result-grid{grid-template-columns:1fr}}
+.radar-wrap{display:flex;justify-content:center;padding:8px 0}
+.catbar{margin-bottom:14px}
+.catbar .cb-head{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;margin-bottom:4px}
+.catbar .cb-track{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+.catbar .cb-fill{height:100%;border-radius:99px;transition:width .6s}
+
+h3.rh{font-size:17px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+h3.rh .ic{font-size:19px}
+
+.action{border-left:4px solid var(--primary);background:#f8faff;border-radius:0 10px 10px 0;padding:13px 16px;margin-bottom:10px}
+.action .a-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14.5px;margin-bottom:4px}
+.action .a-pri{flex:none;font-size:11px;font-weight:800;color:#fff;border-radius:6px;padding:1px 8px}
+.action .a-impact{margin-left:auto;flex:none;font-size:12px;font-weight:700;color:var(--accent)}
+.action p{font-size:13.5px;color:var(--sub)}
+
+.plan-week{display:flex;gap:12px;margin-bottom:12px}
+.plan-week .pw-label{
+  flex:none;width:64px;height:fit-content;text-align:center;background:var(--primary);color:#fff;
+  font-weight:800;font-size:12.5px;border-radius:8px;padding:4px 0;
+}
+.plan-week ul{padding-left:18px;font-size:13.5px}
+.plan-week li{margin-bottom:3px}
+
+/* rank check */
+.rank-form{display:flex;gap:10px;flex-wrap:wrap}
+.rank-form input{flex:1;min-width:200px}
+.rank-result{margin-top:16px}
+.rank-big{font-size:15px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:14px 16px;margin-bottom:12px;font-weight:600}
+.rank-big.miss{background:#fef2f2;border-color:#fca5a5}
+table.rt{width:100%;border-collapse:collapse;font-size:13.5px}
+table.rt th,table.rt td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.rt tr.you{background:#eff6ff;font-weight:700}
+.manual-links a{color:var(--primary);font-weight:700}
+
+/* AI box */
+.ai-box{background:#f5f3ff;border:1.5px solid #ddd6fe;border-radius:var(--radius);padding:20px}
+.ai-out{
+  background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-top:14px;
+  font-size:14px;white-space:normal;display:none;
+}
+.ai-out h4{margin:14px 0 6px;font-size:15px;color:var(--primary-dark)}
+.ai-out h4:first-child{margin-top:0}
+.ai-out ul{padding-left:20px;margin:4px 0 10px}
+.ai-out li{margin-bottom:3px}
+.ai-out p{margin-bottom:8px}
+.spin{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-3px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.note{font-size:12.5px;color:var(--sub);margin-top:10px}
+pre.email-out{
+  display:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-top:14px;
+  font-size:13.5px;white-space:pre-wrap;font-family:inherit;line-height:1.8;
+}
+
+/* CTA */
+.cta-final{
+  background:linear-gradient(135deg,#065f46,#059669);color:#fff;border-radius:var(--radius);
+  padding:34px 26px;text-align:center;
+}
+.cta-final h3{font-size:clamp(19px,3.4vw,24px);font-weight:800;margin-bottom:10px}
+.cta-final p{font-size:14.5px;opacity:.95;max-width:560px;margin:0 auto 20px}
+.cta-final .menu{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:22px}
+.cta-final .menu span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:5px 16px;font-size:13px;font-weight:700}
+.cta-final .btn{background:#fff;color:#065f46;font-size:16px;padding:14px 40px}
+.cta-final .tel{margin-top:14px;font-size:14px;font-weight:700}
+
+footer{padding:34px 0 44px;text-align:center;color:var(--sub);font-size:12.5px}
+footer a{color:var(--primary)}
+
+/* print */
+@media print{
+  .hero,.progress-bar,#form-sec,#diag-btn-sec,.no-print,footer .no-print{display:none!important}
+  body{background:#fff}
+  #result{display:block!important}
+  .card{box-shadow:none;break-inside:avoid}
+  .score-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<!-- ======== 設定(導入企業ごとに書き換え) ======== -->
+<script>
+const CONFIG = {
+  // 運営会社情報(CTA・フッターに表示)
+  companyName : "株式会社サンプル",
+  tel         : "03-0000-0000",
+  contactUrl  : "mailto:info@example.co.jp?subject=MEO診断の結果について相談したい",   // 問い合わせフォームURL推奨
+  services    : ["MEO対策・運用代行", "Googleビジネスプロフィール保守", "ホームページ制作", "口コミ獲得支援"],
+  // AI連携用APIエンドポイント(Cloudflare Worker のURL)。未設定("")ならAI機能は非表示になり、
+  // ルールベースの自動診断のみで動作します。
+  apiEndpoint : "",
+};
+</script>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="logo">M</span>MEOブレイン<span style="font-weight:400;font-size:12px;opacity:.8">| ブレインシリーズ</span></div>
+    <h1>あなたのお店の<span class="em">Googleマップ集客力</span>を<br>60秒で無料診断</h1>
+    <p class="lead">19の診断項目でGoogleビジネスプロフィールを自動採点。改善の優先順位と30日アクションプランまで、その場で作成します。登録不要・完全無料。</p>
+    <div class="badges">
+      <span class="badge">✓ 登録不要</span>
+      <span class="badge">✓ 60秒で完了</span>
+      <span class="badge">✓ AI改善プラン</span>
+      <span class="badge">✓ 検索順位チェック</span>
+    </div>
+    <a href="#form-sec" class="cta-start">今すぐ無料診断する →</a>
+  </div>
+</div>
+
+<div class="progress-bar" id="pbar">
+  <div class="wrap progress-inner">
+    <span>診断の進み具合</span>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <span id="pcount">0 / 0</span>
+  </div>
+</div>
+
+<!-- ======== STEP1 店舗情報 ======== -->
+<section id="form-sec">
+  <div class="wrap">
+    <h2 class="sec"><span class="num">1</span>お店の情報を入力</h2>
+    <p class="sec-sub">診断結果と順位チェックに使用します。個人情報の入力は不要です。</p>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <label class="fl" for="bizName">店舗名・事業所名<span class="req">必須</span></label>
+          <input type="text" id="bizName" placeholder="例:カフェ ブレイン 渋谷店">
+        </div>
+        <div>
+          <label class="fl" for="bizType">業種<span class="req">必須</span></label>
+          <input type="text" id="bizType" placeholder="例:カフェ / 美容室 / 整体院">
+        </div>
+        <div>
+          <label class="fl" for="bizArea">地域(市区町村・駅名など)<span class="req">必須</span></label>
+          <input type="text" id="bizArea" placeholder="例:渋谷 / 横浜市青葉区">
+        </div>
+        <div>
+          <label class="fl" for="bizKw">上位表示したいキーワード</label>
+          <input type="text" id="bizKw" placeholder="例:渋谷 カフェ(空欄なら自動生成)">
+          <div class="hint">「地域 + 業種」が基本です</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="sec" style="margin-top:36px"><span class="num">2</span>19項目のチェック</h2>
+    <p class="sec-sub">現在の運用状況に最も近いものを選んでください。「わからない」場合は一番下の選択肢を選べばOKです。</p>
+    <div id="questions"></div>
+  </div>
+</section>
+
+<section id="diag-btn-sec" class="center" style="padding-top:0">
+  <div class="wrap">
+    <button class="btn btn-primary" id="diagBtn" disabled onclick="runDiagnosis()">診断結果を見る(無料)</button>
+    <p class="hint" id="diagHint" style="margin-top:10px">すべての質問に回答すると診断できます</p>
+  </div>
+</section>
+
+<!-- ======== 結果 ======== -->
+<section id="result">
+  <div class="wrap">
+    <h2 class="sec"><span class="num">3</span>診断結果</h2>
+    <p class="sec-sub" id="resultFor"></p>
+
+    <div class="score-hero">
+      <div class="gauge">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="78" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="14"/>
+          <circle id="gaugeArc" cx="90" cy="90" r="78" fill="none" stroke="#34d399" stroke-width="14"
+                  stroke-linecap="round" stroke-dasharray="490" stroke-dashoffset="490"
+                  style="transition:stroke-dashoffset 1s ease"/>
+        </svg>
+        <div class="gtxt"><span class="gnum" id="scoreNum">0</span><span class="gunit">/ 100点</span></div>
+      </div>
+      <div>
+        <span class="rank-label" id="rankLabel"></span>
+        <h3 id="scoreTitle"></h3>
+        <p id="scoreComment"></p>
+      </div>
+    </div>
+
+    <div class="result-grid">
+      <div class="card">
+        <h3 class="rh"><span class="ic">📊</span>カテゴリ別バランス</h3>
+        <div class="radar-wrap" id="radar"></div>
+      </div>
+      <div class="card">
+        <h3 class="rh"><span class="ic">📈</span>カテゴリ別スコア</h3>
+        <div id="catbars"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="rh"><span class="ic">🎯</span>優先改善アクション <span style="font-size:12px;color:var(--sub);font-weight:400">(効果が大きい順)</span></h3>
+      <div id="actions"></div>
+    </div>
+
+    <div class="card">
+      <h3 class="rh"><span class="ic">🗓</span>30日アクションプラン</h3>
+      <div id="plan"></div>
+    </div>
+
+    <!-- 順位チェック -->
+    <div class="card">
+      <h3 class="rh"><span class="ic">🔍</span>Googleマップ検索順位チェック</h3>
+      <div class="rank-form">
+        <input type="text" id="rankKw" placeholder="検索キーワード(例:渋谷 カフェ)">
+        <button class="btn btn-accent no-print" id="rankBtn" onclick="checkRank()">順位をチェック</button>
+      </div>
+      <div class="rank-result" id="rankResult"></div>
+      <div class="manual-links note" id="manualRank"></div>
+    </div>
+
+    <!-- AI診断 -->
+    <div class="ai-box" id="aiBox" style="margin-bottom:14px">
+      <h3 class="rh"><span class="ic">🤖</span>AI詳細診断レポート</h3>
+      <p style="font-size:13.5px;color:var(--sub)">診断結果をもとに、AIがあなたのお店専用の改善レポート(具体的な投稿例・口コミ返信例つき)を作成します。</p>
+      <div style="margin-top:12px" class="no-print">
+        <button class="btn btn-accent" id="aiBtn" onclick="runAI()">AIレポートを作成する(無料)</button>
+      </div>
+      <div class="ai-out" id="aiOut"></div>
+      <div class="note" id="aiNote"></div>
+    </div>
+
+    <!-- 営業モード(?mode=sales でアクセスした場合のみ表示 / 社内用) -->
+    <div class="ai-box no-print" id="salesBox" style="display:none;margin-bottom:14px;background:#fffbeb;border-color:#fde68a">
+      <h3 class="rh"><span class="ic">💼</span>営業メール自動作成 <span style="font-size:11px;color:var(--warn);font-weight:700">社内用モード</span></h3>
+      <p style="font-size:13.5px;color:var(--sub)">この診断結果をもとに、見込み客への初回アプローチメールをAIが作成します。作成後はそのままコピーして送信できます。</p>
+      <div style="margin-top:12px">
+        <button class="btn btn-accent" id="salesBtn" onclick="runSalesEmail()" style="background:var(--warn)">営業メールを作成する</button>
+        <button class="btn btn-ghost" id="salesCopyBtn" onclick="copySalesEmail()" style="display:none;margin-left:8px">📋 コピー</button>
+      </div>
+      <pre class="email-out" id="salesOut"></pre>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-final">
+      <h3>この改善、ぜんぶ丸投げできます。</h3>
+      <p id="ctaMsg">診断で見つかった課題の改善から、日々の投稿・口コミ返信・順位レポートまで。<span id="ctaCompany"></span>がお店の「Googleマップ担当者」として運用を代行します。</p>
+      <div class="menu" id="ctaMenu"></div>
+      <a class="btn" id="ctaBtn" href="#" target="_blank" rel="noopener">無料で相談する →</a>
+      <div class="tel" id="ctaTel"></div>
+    </div>
+
+    <div class="center no-print" style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="window.print()">🖨 診断レポートを印刷 / PDF保存</button>
+      <button class="btn btn-ghost" onclick="location.reload()">↺ もう一度診断する</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div id="footCompany"></div>
+    <div style="margin-top:6px">MEOブレイン - 無料MEO診断ツール(ブレインシリーズ)</div>
+    <div class="note">本診断はご入力内容に基づく簡易診断です。スコアは集客成果を保証するものではありません。</div>
+  </div>
+</footer>
+
+<script>
+/* =====================================================
+   診断データ:5カテゴリ / 19問(重み合計 = 100点)
+===================================================== */
+const CATEGORIES = [
+  {id:"basic",   label:"基本情報",   max:25},
+  {id:"review",  label:"口コミ",     max:25},
+  {id:"content", label:"写真・投稿", max:20},
+  {id:"web",     label:"Web連携",    max:15},
+  {id:"engage",  label:"活用度",     max:15},
+];
+
+const QUESTIONS = [
+ // --- 基本情報 25 ---
+ {cat:"basic", w:6, q:"Googleビジネスプロフィールのカテゴリ設定は?",
+  opts:[["メイン+追加カテゴリまで戦略的に設定している",1],["メインカテゴリのみ適切に設定している",.6],["設定したが最適かどうかは不明",.3],["未設定/わからない",0]],
+  aTitle:"カテゴリの最適化", advice:"カテゴリはMEO順位への影響が最も大きい設定項目のひとつです。メインカテゴリを最重要業種に合わせ、追加カテゴリで提供サービスを網羅しましょう。競合上位店のカテゴリ設定も参考になります。"},
+ {cat:"basic", w:4, q:"営業時間の設定・更新は?",
+  opts:[["通常営業時間に加え、祝日・臨時休業などの特別営業時間も常に更新",1],["通常の営業時間のみ設定している",.6],["未設定/古い情報のまま",0]],
+  aTitle:"営業時間(特別営業時間)の整備", advice:"営業時間が不正確だと「行ったら閉まっていた」という低評価口コミの原因になり、Googleからの信頼も下がります。祝日や連休前に特別営業時間を設定する運用ルールを作りましょう。"},
+ {cat:"basic", w:4, q:"ビジネスの説明文(紹介文)は?",
+  opts:[["検索キーワードを含む説明文を750字近くまで記載",1],["簡単な説明のみ記載している",.5],["未記入/わからない",0]],
+  aTitle:"ビジネス説明文の充実", advice:"説明文は最大750字まで登録できます。「地域名+業種+強み+サービス内容」を自然な文章で盛り込み、来店を迷っているユーザーの背中を押す内容にしましょう。"},
+ {cat:"basic", w:6, q:"店名・住所・電話番号(NAP)の表記は、公式サイトやSNS・ポータルサイトと一致していますか?",
+  opts:[["すべての媒体で表記を統一している(確認済み)",1],["概ね一致しているはずだが、未確認の媒体がある",.5],["不一致がある/確認したことがない",0]],
+  aTitle:"NAP情報の統一(サイテーション対策)", advice:"Googleは店名・住所・電話番号(NAP)の一致度で情報の信頼性を判断します。公式サイト・SNS・食べログ等ポータル・地図サービスの表記を1文字単位(ビル名・全角半角まで)で統一しましょう。"},
+ {cat:"basic", w:5, q:"サービス・商品・メニューの登録は?",
+  opts:[["写真・価格付きで主要サービスを網羅的に登録",1],["一部のみ登録している",.5],["未登録/わからない",0]],
+  aTitle:"サービス・商品情報の登録", advice:"サービスや商品を写真・価格付きで登録すると、プロフィールの情報量が増えて検索一致率が上がるだけでなく、閲覧ユーザーの来店率も向上します。主要メニューはすべて登録しましょう。"},
+
+ // --- 口コミ 25 ---
+ {cat:"review", w:8, q:"口コミの件数は?",
+  opts:[["100件以上",1],["30〜99件",.75],["10〜29件",.5],["1〜9件",.25],["0件",0]],
+  aTitle:"口コミ件数の積み上げ", advice:"口コミ件数はMEO順位と来店率の両方に直結します。まずは競合上位3店の平均件数を目標に、来店客への声かけ・QRコード設置で毎月コンスタントに獲得できる仕組みを作りましょう。"},
+ {cat:"review", w:5, q:"口コミの平均評価(星の数)は?",
+  opts:[["4.5以上",1],["4.0〜4.4",.8],["3.5〜3.9",.5],["3.5未満",.2],["口コミがない/わからない",0]],
+  aTitle:"平均評価の改善", advice:"ユーザーの多くは星4.0を選定基準にしています。満足度の高いお客様に口コミを依頼する導線を作ることで、件数と評価を同時に底上げできます。低評価には誠実な返信で必ずフォローを。"},
+ {cat:"review", w:6, q:"口コミへの返信は?",
+  opts:[["ほぼすべての口コミに返信している",1],["半分くらいは返信している",.5],["ほとんど返信していない",0]],
+  aTitle:"口コミ返信率100%の徹底", advice:"返信率はGoogleが公式に推奨する運用シグナルであり、閲覧ユーザーへの印象も大きく変えます。低評価にも感情的にならず改善姿勢を示す返信を。返信文にサービス名や地域名を自然に含めるのも有効です。"},
+ {cat:"review", w:6, q:"口コミを集める仕組みはありますか?",
+  opts:[["QRコードやカード等で依頼を仕組み化し、毎月新規獲得できている",1],["たまに口頭でお願いする程度",.4],["特に何もしていない",0]],
+  aTitle:"口コミ獲得の仕組み化", advice:"「口コミ投稿用QRコード付きカードを会計時に渡す」「施術後にその場でお願いする」など、オペレーションに組み込むことで獲得数は安定します。※金品と引き換えの依頼はガイドライン違反なのでNGです。"},
+
+ // --- 写真・投稿 20 ---
+ {cat:"content", w:6, q:"登録している写真の枚数は?",
+  opts:[["100枚以上あり、定期的に追加している",1],["30〜99枚",.7],["10〜29枚",.4],["10枚未満/わからない",.1]],
+  aTitle:"写真の拡充", advice:"写真が多い店舗ほど閲覧数・ルート検索数が伸びる傾向があります。外観・内観・商品・スタッフ・メニューをバランスよく、月に数枚ずつでも追加し続けましょう。"},
+ {cat:"content", w:8, q:"最新情報(投稿)の頻度は?",
+  opts:[["週1回以上投稿している",1],["月1〜2回程度",.6],["数ヶ月に1回程度",.3],["投稿したことがない",0]],
+  aTitle:"週1回の定期投稿", advice:"投稿はプロフィールの「運用されている感」をGoogleとユーザーの両方に伝える最重要アクションです。キャンペーン・新商品・お客様の声などを週1回投稿するルーティンを作りましょう。"},
+ {cat:"content", w:2, q:"動画は登録していますか?",
+  opts:[["登録している",1],["登録していない",0]],
+  aTitle:"動画の登録", advice:"30秒程度の店内紹介動画があるだけで競合と差別化できます。スマホ撮影で十分なので、雰囲気が伝わる動画を1本登録しましょう。"},
+ {cat:"content", w:4, q:"写真のクオリティは?",
+  opts:[["プロ撮影または統一感のある高品質な写真",1],["スマホ撮影だが明るく綺麗に撮っている",.6],["質はあまり意識していない",.2]],
+  aTitle:"写真クオリティの改善", advice:"1枚目に表示される写真の印象で来店率は大きく変わります。明るさ・構図を意識し、最低でもメイン写真数枚はプロ品質を目指しましょう。"},
+
+ // --- Web連携 15 ---
+ {cat:"web", w:6, q:"公式ホームページは?",
+  opts:[["あり、プロフィールからリンク設定済み",1],["あるがリンク未設定/情報が古い",.5],["公式サイトがない",0]],
+  aTitle:"公式サイトとの連携", advice:"公式サイトはGoogleがビジネスの実在性・専門性を判断する重要な情報源です。サイトがない場合、MEOの伸びしろに上限ができてしまいます。1ページでも良いので公式サイトを持ち、プロフィールからリンクしましょう。"},
+ {cat:"web", w:5, q:"公式サイトの地域SEO対策は?",
+  opts:[["構造化データや地域キーワードを含めた対策をしている",1],["スマホ対応はできている",.5],["対策していない/わからない",0]],
+  aTitle:"サイトのローカルSEO強化", advice:"サイトのタイトル・見出しに「地域名+業種」を入れる、LocalBusiness構造化データを設置する、といった対策はマップ順位にも好影響があります。MEOとSEOはセットで取り組むのが最短ルートです。"},
+ {cat:"web", w:4, q:"SNS(Instagram等)の運用は?",
+  opts:[["定期更新しており、プロフィールやサイトと連携している",1],["アカウントはあるがほぼ更新していない",.4],["やっていない",0]],
+  aTitle:"SNSとの相互連携", advice:"SNSはサイテーション(言及)を増やし、指名検索を生む装置です。プロフィール・公式サイトとNAP表記を揃えたうえで、投稿を相互に連携させましょう。"},
+
+ // --- 活用度 15 ---
+ {cat:"engage", w:4, q:"Q&A(質問と回答)機能は?",
+  opts:[["よくある質問を自ら登録し回答している",1],["ユーザーから来た質問に答えるだけ",.5],["未対応/わからない",0]],
+  aTitle:"Q&Aの先回り登録", advice:"Q&Aはオーナー自身で質問と回答を登録できます。「駐車場はありますか?」「予約は必要ですか?」など、よくある質問を5〜10個先回りで登録しておくと機会損失を防げます。"},
+ {cat:"engage", w:5, q:"予約・問い合わせの導線は?",
+  opts:[["予約リンクやメッセージ機能を有効化し、すぐ対応できる体制",1],["電話のみ",.4],["特に整備していない",0]],
+  aTitle:"予約・問い合わせ導線の整備", advice:"プロフィール上で予約まで完結できると、来店率(コンバージョン)が大きく改善します。予約システムのリンク設定やメッセージ機能の有効化を検討しましょう。"},
+ {cat:"engage", w:6, q:"キャンペーンやお知らせなどの情報発信は?",
+  opts:[["季節・キャンペーン情報を計画的に発信している",1],["気が向いたときに発信する程度",.4],["していない",0]],
+  aTitle:"計画的な情報発信", advice:"「今行く理由」を作る発信(期間限定メニュー・キャンペーン)は、閲覧からの来店率を高めます。月初に1ヶ月分の発信予定を決めておくと運用が続きます。"},
+];
+
+/* ============ フォーム描画 ============ */
+const answers = new Array(QUESTIONS.length).fill(null);
+const catLabel = id => CATEGORIES.find(c=>c.id===id).label;
+
+function renderQuestions(){
+  const box = document.getElementById("questions");
+  box.innerHTML = QUESTIONS.map((qu,i)=>`
+    <div class="q-card" id="qc${i}">
+      <div class="q-title"><span class="qn">Q${i+1}.</span><span>${qu.q}</span><span class="q-cat">${catLabel(qu.cat)}</span></div>
+      <div class="opts">
+        ${qu.opts.map((o,j)=>`
+          <label class="opt" id="opt${i}_${j}">
+            <input type="radio" name="q${i}" value="${j}" onchange="onAnswer(${i},${j})">
+            <span>${o[0]}</span>
+          </label>`).join("")}
+      </div>
+    </div>`).join("");
+  updateProgress();
+}
+
+function onAnswer(i,j){
+  answers[i]=j;
+  document.querySelectorAll(`#qc${i} .opt`).forEach(el=>el.classList.remove("sel"));
+  document.getElementById(`opt${i}_${j}`).classList.add("sel");
+  document.getElementById(`qc${i}`).classList.add("answered");
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = answers.filter(a=>a!==null).length;
+  const total = QUESTIONS.length;
+  document.getElementById("pcount").textContent = `${done} / ${total}`;
+  document.getElementById("pfill").style.width = (done/total*100)+"%";
+  document.getElementById("pbar").classList.add("show");
+  const ready = done===total && requiredFilled();
+  document.getElementById("diagBtn").disabled = !ready;
+  document.getElementById("diagHint").textContent = ready ? "準備OK!ボタンを押して診断結果を見ましょう"
+    : (done===total ? "上部の店舗名・業種・地域を入力してください" : "すべての質問に回答すると診断できます");
+}
+function requiredFilled(){
+  return ["bizName","bizType","bizArea"].every(id=>document.getElementById(id).value.trim()!=="");
+}
+["bizName","bizType","bizArea"].forEach(id=>{
+  document.addEventListener("DOMContentLoaded",()=>document.getElementById(id).addEventListener("input",updateProgress));
+});
+
+/* ============ 採点 ============ */
+let RESULT = null;
+
+function computeResult(){
+  const cats = CATEGORIES.map(c=>({...c, score:0}));
+  const weak = [];
+  QUESTIONS.forEach((qu,i)=>{
+    const factor = qu.opts[answers[i]][1];
+    const pts = qu.w * factor;
+    cats.find(c=>c.id===qu.cat).score += pts;
+    if(factor < 0.7){
+      weak.push({
+        i, qu,
+        chosen: qu.opts[answers[i]][0],
+        impact: qu.w * (1-factor),   // 改善で見込める点数
+      });
+    }
+  });
+  weak.sort((a,b)=>b.impact-a.impact);
+  const total = Math.round(cats.reduce((s,c)=>s+c.score,0));
+  return {total, cats: cats.map(c=>({...c, score: Math.round(c.score*10)/10})), weak};
+}
+
+function rankOf(total){
+  if(total>=85) return {label:"S", color:"#34d399", title:"素晴らしい運用レベルです!",
+    comment:"MEOの土台はほぼ完成しています。競合の動向モニタリングと、口コミ・投稿の継続で上位を維持しましょう。"};
+  if(total>=70) return {label:"A", color:"#60a5fa", title:"あと一歩で上位争いに入れます",
+    comment:"基礎はできています。残った弱点カテゴリを潰せば、地域上位3位以内(ローカルパック)が現実的に狙えます。"};
+  if(total>=50) return {label:"B", color:"#fbbf24", title:"伸びしろが大きい状態です",
+    comment:"重要項目にいくつか未対応があります。優先改善アクションの上位3つに着手するだけでもスコアと露出は大きく変わります。"};
+  if(total>=30) return {label:"C", color:"#fb923c", title:"機会損失が発生している可能性大",
+    comment:"現状では競合にお客様が流れている可能性が高い状態です。まず基本情報と口コミの2カテゴリから立て直しましょう。"};
+  return {label:"D", color:"#f87171", title:"今が始めどきです",
+    comment:"ほぼ未着手の状態ですが、裏を返せば改善効果が最も出やすい状態です。30日プランに沿って1つずつ進めましょう。"};
+}
+
+/* ============ 診断実行・描画 ============ */
+function runDiagnosis(){
+  RESULT = computeResult();
+  const r = RESULT;
+  const biz = getBiz();
+
+  document.getElementById("result").style.display="block";
+  document.getElementById("resultFor").textContent =
+    `${biz.name}(${biz.type} / ${biz.area})の診断結果 - 診断日: ${new Date().toLocaleDateString("ja-JP")}`;
+
+  // ゲージ
+  const rk = rankOf(r.total);
+  const arc = document.getElementById("gaugeArc");
+  const C = 2*Math.PI*78;
+  arc.setAttribute("stroke-dasharray", C);
+  arc.setAttribute("stroke", rk.color);
+  setTimeout(()=>{ arc.setAttribute("stroke-dashoffset", C*(1-r.total/100)); },100);
+  animateNum(document.getElementById("scoreNum"), r.total);
+  const rl = document.getElementById("rankLabel");
+  rl.textContent = `総合ランク ${rk.label}`; rl.style.background = rk.color; rl.style.color="#0f172a";
+  document.getElementById("scoreTitle").textContent = rk.title;
+  document.getElementById("scoreComment").textContent = rk.comment;
+
+  drawRadar(r.cats);
+  drawCatBars(r.cats);
+  drawActions(r.weak);
+  drawPlan(r.weak);
+  setupRank(biz);
+  setupAI();
+  setupSalesMode();
+  setupCTA();
+
+  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+
+function getBiz(){
+  const name=document.getElementById("bizName").value.trim();
+  const type=document.getElementById("bizType").value.trim();
+  const area=document.getElementById("bizArea").value.trim();
+  let kw=document.getElementById("bizKw").value.trim();
+  if(!kw) kw = `${area} ${type}`;
+  return {name,type,area,kw};
+}
+
+function animateNum(el,to){
+  let v=0; const step=Math.max(1,Math.round(to/40));
+  const t=setInterval(()=>{ v+=step; if(v>=to){v=to;clearInterval(t);} el.textContent=v; },20);
+}
+
+/* レーダーチャート(SVG) */
+function drawRadar(cats){
+  const size=260, cx=size/2, cy=size/2, R=92, n=cats.length;
+  const pt=(i,ratio)=>{
+    const ang=-Math.PI/2 + i*2*Math.PI/n;
+    return [cx+R*ratio*Math.cos(ang), cy+R*ratio*Math.sin(ang)];
+  };
+  let grid="";
+  [0.25,0.5,0.75,1].forEach(g=>{
+    const pts=cats.map((_,i)=>pt(i,g).join(",")).join(" ");
+    grid+=`<polygon points="${pts}" fill="none" stroke="#e2e8f0" stroke-width="1"/>`;
+  });
+  let axes="", labels="";
+  cats.forEach((c,i)=>{
+    const [x,y]=pt(i,1);
+    axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
+    const [lx,ly]=pt(i,1.24);
+    labels+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="11.5" font-weight="700" fill="#334155">${c.label}</text>
+             <text x="${lx}" y="${ly+13}" text-anchor="middle" font-size="10" fill="#64748b">${c.score}/${c.max}</text>`;
+  });
+  const dataPts=cats.map((c,i)=>pt(i, Math.max(0.04, c.score/c.max)).join(",")).join(" ");
+  document.getElementById("radar").innerHTML=`
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+      ${grid}${axes}
+      <polygon points="${dataPts}" fill="rgba(29,78,216,.22)" stroke="#1d4ed8" stroke-width="2.5" stroke-linejoin="round"/>
+      ${labels}
+    </svg>`;
+}
+
+function drawCatBars(cats){
+  document.getElementById("catbars").innerHTML = cats.map(c=>{
+    const pct=Math.round(c.score/c.max*100);
+    const col = pct>=75 ? "#059669" : pct>=45 ? "#d97706" : "#dc2626";
+    return `<div class="catbar">
+      <div class="cb-head"><span>${c.label}</span><span style="color:${col}">${c.score} / ${c.max}点</span></div>
+      <div class="cb-track"><div class="cb-fill" style="width:${pct}%;background:${col}"></div></div>
+    </div>`;
+  }).join("");
+}
+
+function drawActions(weak){
+  const box=document.getElementById("actions");
+  if(!weak.length){
+    box.innerHTML=`<p style="font-size:14px">大きな課題は見つかりませんでした。現在の運用を継続しつつ、競合モニタリングと口コミ獲得ペースの維持に注力しましょう。</p>`;
+    return;
+  }
+  const priCol=["#dc2626","#ea580c","#d97706","#2563eb","#2563eb"];
+  box.innerHTML = weak.slice(0,5).map((w,idx)=>`
+    <div class="action">
+      <div class="a-head">
+        <span class="a-pri" style="background:${priCol[idx]}">優先度${idx+1}</span>
+        <span>${w.qu.aTitle}</span>
+        <span class="a-impact">+${Math.round(w.impact*10)/10}点の伸びしろ</span>
+      </div>
+      <p><b>現状:</b>${w.chosen}<br>${w.qu.advice}</p>
+    </div>`).join("");
+}
+
+function drawPlan(weak){
+  const items = weak.slice(0,8);
+  const weeks=[[],[],[],[]];
+  items.forEach((w,i)=>weeks[i%4].push(w.qu.aTitle));
+  // 恒常タスクを追加
+  weeks[0].push("口コミ投稿依頼のQRコード/カードを用意");
+  weeks[1].push("最新情報の投稿を開始(週1回ペース)");
+  weeks[2].push("全口コミへの返信を完了させる");
+  weeks[3].push("順位チェックで効果測定 → 翌月の計画づくり");
+  const names=["1週目","2週目","3週目","4週目"];
+  document.getElementById("plan").innerHTML = weeks.map((w,i)=>`
+    <div class="plan-week">
+      <div class="pw-label">${names[i]}</div>
+      <ul>${[...new Set(w)].map(t=>`<li>${t}</li>`).join("")}</ul>
+    </div>`).join("");
+}
+
+/* ============ 順位チェック ============ */
+function setupRank(biz){
+  document.getElementById("rankKw").value = biz.kw;
+  updateManualLinks(biz.kw);
+}
+function updateManualLinks(kw){
+  const url=`https://www.google.com/maps/search/${encodeURIComponent(kw)}`;
+  document.getElementById("manualRank").innerHTML =
+    `手動で確認する場合:<a href="${url}" target="_blank" rel="noopener">Googleマップで「${kw}」を検索 →</a>
+     (正確に確認するにはシークレットモード推奨。検索する場所によって順位は変動します)`;
+}
+
+async function checkRank(){
+  const kw=document.getElementById("rankKw").value.trim();
+  if(!kw) return;
+  updateManualLinks(kw);
+  const biz=getBiz();
+  const out=document.getElementById("rankResult");
+  if(!CONFIG.apiEndpoint){
+    out.innerHTML=`<div class="rank-big miss">自動順位チェックは現在準備中です。上のリンクから手動でご確認ください。</div>`;
+    return;
+  }
+  const btn=document.getElementById("rankBtn");
+  btn.disabled=true; btn.innerHTML=`<span class="spin"></span> チェック中...`;
+  try{
+    const res=await fetch(CONFIG.apiEndpoint+"/rank",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({keyword:kw, businessName:biz.name, location:biz.area}),
+    });
+    if(!res.ok) throw new Error("api");
+    const data=await res.json();
+    let html="";
+    if(data.rank){
+      html+=`<div class="rank-big">🎉 「${kw}」で <b style="font-size:20px">${data.rank}位</b> に表示されています(上位${data.results.length}件中)</div>`;
+    }else{
+      html+=`<div class="rank-big miss">「${kw}」の上位${data.results.length}件に「${biz.name}」が見つかりませんでした。改善プランの実行で圏内入りを目指しましょう。</div>`;
+    }
+    if(data.results && data.results.length){
+      html+=`<table class="rt"><tr><th>順位</th><th>店舗名</th><th>評価</th><th>口コミ数</th></tr>`+
+        data.results.slice(0,10).map((r,i)=>
+          `<tr class="${data.rank===i+1?"you":""}"><td>${i+1}</td><td>${esc(r.name)}</td><td>★${r.rating??"-"}</td><td>${r.reviews??"-"}</td></tr>`).join("")+
+        `</table><div class="note">※Google Places APIの検索結果に基づく参考順位です。実際のマップ表示順位は検索地点・時間帯により変動します。</div>`;
+    }
+    out.innerHTML=html;
+  }catch(e){
+    out.innerHTML=`<div class="rank-big miss">順位チェックに失敗しました。時間をおいて再度お試しいただくか、上のリンクから手動でご確認ください。</div>`;
+  }finally{
+    btn.disabled=false; btn.textContent="順位をチェック";
+  }
+}
+
+/* ============ AI診断 ============ */
+function setupAI(){
+  if(!CONFIG.apiEndpoint){
+    document.getElementById("aiBtn").style.display="none";
+    document.getElementById("aiNote").textContent="AI詳細診断は現在準備中です。上の自動診断・改善プランをご活用ください。";
+  }
+}
+
+function buildPayload(){
+  const biz=getBiz();
+  return {
+    business: biz,
+    totalScore: RESULT.total,
+    categories: RESULT.cats.map(c=>({label:c.label, score:c.score, max:c.max})),
+    weakPoints: RESULT.weak.slice(0,8).map(w=>({item:w.qu.aTitle, current:w.chosen, impact:Math.round(w.impact*10)/10})),
+  };
+}
+
+async function runAI(){
+  const btn=document.getElementById("aiBtn");
+  const out=document.getElementById("aiOut");
+  btn.disabled=true; btn.innerHTML=`<span class="spin"></span> AIがレポートを作成中(30秒ほどかかります)...`;
+  try{
+    const res=await fetch(CONFIG.apiEndpoint+"/diagnose",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(buildPayload()),
+    });
+    if(!res.ok) throw new Error("api");
+    const data=await res.json();
+    out.innerHTML=mdToHtml(data.advice);
+    out.style.display="block";
+    btn.style.display="none";
+  }catch(e){
+    document.getElementById("aiNote").textContent="AIレポートの作成に失敗しました。時間をおいて再度お試しください。";
+    btn.disabled=false; btn.textContent="AIレポートを作成する(無料)";
+  }
+}
+
+/* 簡易Markdown→HTML(見出し・リスト・強調のみ) */
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function mdToHtml(md){
+  const lines=esc(md).split("\n");
+  let html="",inList=false;
+  for(const raw of lines){
+    const line=raw.trimEnd();
+    const m=line.match(/^(#{1,4})\s+(.*)/);
+    if(m){ if(inList){html+="</ul>";inList=false;} html+=`<h4>${inline(m[2])}</h4>`; continue; }
+    if(/^\s*[-・*]\s+/.test(line)){
+      if(!inList){html+="<ul>";inList=true;}
+      html+=`<li>${inline(line.replace(/^\s*[-・*]\s+/,""))}</li>`; continue;
+    }
+    if(inList){html+="</ul>";inList=false;}
+    if(line.trim()==="") continue;
+    html+=`<p>${inline(line)}</p>`;
+  }
+  if(inList)html+="</ul>";
+  return html;
+  function inline(s){return s.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");}
+}
+
+/* ============ 営業モード(社内用) ============ */
+function setupSalesMode(){
+  const isSales = new URLSearchParams(location.search).get("mode")==="sales";
+  if(isSales && CONFIG.apiEndpoint){
+    document.getElementById("salesBox").style.display="block";
+  }
+}
+
+async function runSalesEmail(){
+  const btn=document.getElementById("salesBtn");
+  const out=document.getElementById("salesOut");
+  btn.disabled=true; btn.innerHTML=`<span class="spin"></span> 作成中...`;
+  try{
+    const payload=buildPayload();
+    payload.senderCompany=CONFIG.companyName;
+    const res=await fetch(CONFIG.apiEndpoint+"/sales-email",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload),
+    });
+    if(!res.ok) throw new Error("api");
+    const data=await res.json();
+    out.textContent=data.email;
+    out.style.display="block";
+    document.getElementById("salesCopyBtn").style.display="inline-flex";
+    btn.textContent="もう一度作成する";
+  }catch(e){
+    out.textContent="メールの作成に失敗しました。時間をおいて再度お試しください。";
+    out.style.display="block";
+    btn.textContent="営業メールを作成する";
+  }finally{
+    btn.disabled=false;
+    if(btn.innerHTML.includes("spin")) btn.textContent="営業メールを作成する";
+  }
+}
+
+function copySalesEmail(){
+  const text=document.getElementById("salesOut").textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const b=document.getElementById("salesCopyBtn");
+    b.textContent="✓ コピーしました"; setTimeout(()=>b.textContent="📋 コピー",1500);
+  });
+}
+
+/* ============ CTA ============ */
+function setupCTA(){
+  document.getElementById("ctaCompany").textContent=CONFIG.companyName;
+  document.getElementById("ctaMenu").innerHTML=CONFIG.services.map(s=>`<span>${s}</span>`).join("");
+  const btn=document.getElementById("ctaBtn");
+  btn.href=CONFIG.contactUrl||"#";
+  document.getElementById("ctaTel").textContent=CONFIG.tel?`お電話でのご相談:${CONFIG.tel}`:"";
+  document.getElementById("footCompany").innerHTML=`運営:<b>${CONFIG.companyName}</b>`;
+}
+
+renderQuestions();
+document.addEventListener("DOMContentLoaded",()=>{
+  ["bizName","bizType","bizArea"].forEach(id=>document.getElementById(id).addEventListener("input",updateProgress));
+});
+</script>
+</body>
+</html>
