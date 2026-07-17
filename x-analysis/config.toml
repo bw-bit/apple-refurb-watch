@@ -1,0 +1,18 @@
+# X分析システム設定 — ここを自分の界隈に書き換えるだけで全フェーズに反映される
+
+[genre]
+theme = "AIツール × note・X運用の稼ぎ方"   # 自分の発信ジャンル
+role_model_accounts = [                      # 実在するお手本アカウント (3〜5個)
+  "@example1",
+  "@example2",
+  "@example3",
+]
+
+[search]
+period_days = 90        # 直近◯日のポストを対象
+max_results = 20        # xAI Live Search の検索ソース上限 (課金制御)
+
+[models]
+heavy = "claude-opus-4-8"   # 重い分析 (analyze / playbook)
+light = "claude-sonnet-5"   # 整形 (format)
+grok  = "grok-4"            # X検索 (fetch)
