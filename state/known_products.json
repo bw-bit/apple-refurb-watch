@@ -1,12 +1,14 @@
 {
   "known_part_numbers": [
     "FCX44J/A",
+    "FCYT4J/A",
     "FU963J/A",
     "FU973J/A",
     "FU9D3J/A",
     "FU9E3J/A",
     "G1CD1J/A",
     "G1CD3J/A",
+    "G1CDAJ/A",
     "G1CDEJ/A",
     "G1CE0J/A",
     "G1CE1J/A",
@@ -31,6 +33,7 @@
     "G1FWLJ/A",
     "G1FWMJ/A",
     "G1JV6J/A",
+    "G1JV7J/A",
     "G1JV8J/A",
     "G1JV9J/A",
     "G1JVJJ/A",
@@ -54,6 +57,6 @@
     "G1MN8J/A",
     "G1MN9J/A"
   ],
-  "last_check_utc": "2026-09-28T04:17:08.642932+00:00",
-  "last_watched_count": 6
+  "last_check_utc": "2026-09-28T10:57:21.268822+00:00",
+  "last_watched_count": 17
 }
